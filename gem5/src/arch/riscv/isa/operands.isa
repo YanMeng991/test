@@ -1,0 +1,50 @@
+// -*- mode:c++ -*-
+
+def operand_types {{
+    'sb' : 'int8_t',
+    'ub' : 'uint8_t',
+    'sh' : 'int16_t',
+    'uh' : 'uint16_t',
+    'sw' : 'int32_t',
+    'uw' : 'uint32_t',
+    'sd' : 'int64_t',
+    'ud' : 'uint64_t',
+    'sf' : 'float',
+    'df' : 'double'
+}};
+
+def operands {{
+    # Postfix U means unsigned, S mean signed
+    # R-type/I-type
+    'IRdU': ('IntReg', 'uw', 'I_RD', 'IsInteger', 1),
+    'IRdS': ('IntReg', 'sw', 'I_RD', 'IsInteger', 1),
+    'IRs1U': ('IntReg', 'uw', 'I_RS1', 'IsInteger', 2),
+    'IRs1S': ('IntReg', 'sw', 'I_RS1', 'IsInteger', 2),
+    # R-type
+    'RRs2U': ('IntReg', 'uw', 'I_RS2', 'IsInteger', 3),
+    'RRs2S': ('IntReg', 'sw', 'I_RS2', 'IsInteger', 3),
+    # I-type
+    'IImmU': ('IntReg', 'uw', 'I_IMM', 'IsInteger', 3),
+    'IImmS': ('IntReg', 'sw', 'I_IMM', 'IsInteger', 3),
+
+    # S-type/SB-type
+    'SImm1U': ('IntReg', 'uw', 'S_IMM1', 'IsInteger', 1),
+    'SImm1S': ('IntReg', 'sw', 'S_IMM1', 'IsInteger', 1),
+    'SRs1U': ('IntReg', 'uw', 'I_RS1', 'IsInteger', 2),
+    'SRs1S': ('IntReg', 'sw', 'I_RS1', 'IsInteger', 2),
+    'SRs2U': ('IntReg', 'uw', 'I_RS2', 'IsInteger', 3),
+    'SRs2S': ('IntReg', 'sw', 'I_RS2', 'IsInteger', 3),
+    'SImm2U': ('IntReg', 'uw', 'S_IMM2', 'IsInteger', 4),
+    'SImm2S': ('IntReg', 'sw', 'S_IMM2', 'IsInteger', 4),
+
+    # U-type/UJ-type
+    'URdU': ('IntReg', 'uw', 'U_RD', 'IsInteger', 1),
+    'URdS': ('IntReg', 'sw', 'U_RD', 'IsInteger', 1),
+    'UImmU': ('IntReg', 'uw', 'U_IMM', 'IsInteger', 2),
+    'UImmS': ('IntReg', 'sw', 'U_IMM', 'IsInteger', 2),
+
+    #Program Counter Operands
+    'PC': ('PCState', 'uw', 'pc', (None, None, 'IsControl'), 4),
+    'NPC': ('PCState', 'uw', 'npc', (None, None, 'IsControl'), 4),
+    'NNPC': ('PCState', 'uw', 'nnpc', (None, None, 'IsControl'), 4)
+}};

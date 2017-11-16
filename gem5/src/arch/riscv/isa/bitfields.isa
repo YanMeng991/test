@@ -1,0 +1,54 @@
+// -*- mode:c++ -*-
+
+////////////////////////////////////////////////////////////////////
+//
+// Bitfield definitions.
+//
+// Document: The RISC-V Instruction Set Manual Version 2.1 Volume I: User-Level ISA, Page 54.
+//
+//
+
+def bitfield OPCODE     <6:0>;
+def bitfield OPCODE_HI  <6:5>;
+def bitfield OPCODE_LO  <4:2>;
+
+// R-type instruction
+
+def bitfield R_RD       <11:7>;
+def bitfield R_FUNCT3   <14:12>;
+def bitfield R_RS1      <19:15>;
+def bitfield R_RS2      <24:20>;
+def bitfield R_FUNCT7   <31:25>;
+
+// I-type instruction
+
+def bitfield I_RD       <11:7>;
+def bitfield I_FUNCT3   <14:12>;
+def bitfield I_RS1      <19:15>;
+def bitfield I_IMM      <31:20>;
+
+// S-type instruction
+
+def bitfield S_IMM1     <11:7>;
+def bitfield S_FUNCT3   <14:12>;
+def bitfield S_RS1      <19:15>;
+def bitfield S_RS2      <24:20>;
+def bitfield S_IMM2     <31:25>;
+
+// SB-type instruction
+
+def bitfield SB_IMM1     <11:7>;
+def bitfield SB_FUNCT3   <14:12>;
+def bitfield SB_RS1      <19:15>;
+def bitfield SB_RS2      <24:20>;
+def bitfield SB_IMM2     <31:25>;
+
+// U-type instruction
+
+def bitfield U_RD        <11:7>;
+def bitfield U_IMM       <31:12>;
+
+// UJ-type instruction
+
+def bitfield UJ_RD       <11:7>;
+def bitfield UJ_IMM      <31:12>;

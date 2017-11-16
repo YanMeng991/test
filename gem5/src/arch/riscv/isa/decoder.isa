@@ -1,0 +1,200 @@
+// -*- mode:c++ -*-
+
+////////////////////////////////////////////////////////////////////
+//
+// The actual RISCV ISA decoder
+//
+// Document: The RISC-V Instruction Set Manual Version 2.1 Volume I: User-Level ISA, Page 54.
+//
+
+decode OPCODE_LO default Unknown::unknown() {
+    // OPCODE: xx00011
+    0x0: decode OPCODE_HI {
+        // OPCODE: 0000011 LOAD
+        0x0: decode I_FUNCT3 {
+            format IntImmOp {
+                // funct3: 000 LB
+                0x0: lb({{
+
+                }});
+                // funct3: 001 LH
+                0x1: lh({{
+
+                }});
+                // funct3: 010 LW
+                0x2: lw({{
+
+                }});
+                // fcunt3: 100 LBU
+                0x4: lbu({{
+
+                }});
+                // funct3: 101 LHU
+                0x5: lhu({{
+
+                }});
+            }
+        }
+        // OPCODE: 0100011 STORE
+        0x1: decode I_FUNCT3 {
+            format IntImmOp {
+                // funct3: 000 SB
+                0x0: sb({{
+
+                }});
+                // funct3: 001 SH
+                0x1: sh({{
+
+                }});
+                // funct3: 010 SW
+                0x2: sw({{
+
+                }});
+            }
+        }
+        // OPCODE: 1000011 MADD
+        // OPCODE: 1100011 BRANCH
+        0x3: decode I_FUNCT3 {
+            format IntImmOp {
+                // funct3: 000 BEQ
+                0x0: beq({{
+
+                }});
+                // funct3: 001 BNE
+                0x1: bne({{
+
+                }});
+                // funct3: 100 BLT
+                0x4: blt({{
+
+                }});
+                // funct3: 101 BGE
+                0x5: bge({{
+
+                }});
+                // funct3: 110 BLTU
+                0x6: bltu({{
+
+                }});
+                // funct3: 111 BGEU
+                0x7: bgeu({{
+
+                }});
+            }
+        }
+    }
+    // OPCODE: xx00111
+    0x1: decode OPCODE_HI {
+        format IntImmOp{ // This is only filler!
+            // OPCODE: 0000111 LOAD-FP
+            0x0: load_fp({{
+
+            }});
+            // OPCODE: 0100111 STORE-FP
+            // OPCODE: 1000111 MSUB
+            // OPCODE: 1100111 JALR
+        }
+    }
+    // OPCODE: xx01011
+    0x2: decode OPCODE_HI {
+        format IntImmOp{ // This is only filler!
+            // OPCODE: 0001011 CUSTOME-0 NOT USED!
+            0x0: custome_0({{
+
+            }});
+            // OPCODE: 0101011 CUSTOME-1 NOT USED!
+            // OPCODE: 1001011 NMSUB
+            // OPCODE: 1101011 RESERVED NOT USED!
+        }
+    }
+    // OPCODE: xx01111
+    0x3: decode OPCODE_HI {
+        format IntImmOp{ // This is only filler!
+            // OPCODE: 0001111 MISC-MEM
+            0x0: misc_mem({{
+
+            }});
+            // OPCODE: 0101111 AMO
+            // OPCODE: 1001111 NMADD
+            // OPCODE: 1101111 JAL
+        }
+    }
+    // OPCODE: xx10011
+    0x4: decode OPCODE_HI {
+        // OPCODE: 0010011 OP-IMM
+        0x1: decode I_FUNCT3 {
+            format IntImmOp {
+                // funct3: 000 ADDI
+                0x0: addi({{
+                    IRdS = IRs1S + IImmS;
+                }});
+                // funct3: 010 SLTI
+                0x2: slti({{
+                    if(IRs1S < IImmS){
+                        IRdS = 1;
+                    }
+                    else{
+                        IRdS = 0;
+                    }
+                }});
+                // funct3: 011 SLTIU
+                0x3: sltiu({{
+                    if(IRs1U < IImmU){
+                        IRdU = 1;
+                    }
+                    else{
+                        IRdU = 0;
+                    }
+                }});
+                // funct3: 100 XORI
+                0x4: xori({{
+                    IRdU = IRs1U ^ IImmU;
+                }});
+                // funct3: 110 ORI
+                0x6: ori({{
+                    IRdU = IRs1U | IImmU;
+                }});
+                // funct3: 111 ANDI
+                0x7: andi({{
+                    IRdU = IRs1U & IImmU;
+                }});
+            }
+        }
+        // OPCODE: 0110011 OP
+        // OPCODE: 1010011 OP-FP
+        // OPCODE: 1110011 SYSTEM
+    }
+    // OPCODE: xx10100
+    0x5: decode OPCODE_HI{
+            format Jump{
+                // OPCODE: 0010111 AUIPC
+                // AUIPC (add upper immediate to pc) is used to build pc-relative addresses and uses the U-type
+                // format. AUIPC forms a 32-bit offset from the 20-bit U-immediate, filling in the lowest 12 bits with
+                // zeros, adds this offset to the pc, then places the result in register rd.
+                0x0: auipc({{
+                    URdU = NNPC = NPC + UImmU;
+                }});
+            }
+            format IntImmOp{
+                // OPCODE: 0110111 LUI
+                0x1: lui({{
+
+                }});
+            }
+            // OPCODE: 1010111 RESERVED NOT USED!
+            // OPCODE: 1110111 RESERVED NOT USED!
+    }
+    // OPCODE: xx11011
+    0x6: decode OPCODE_HI{
+        format IntImmOp{ // This is only filler!
+            // OPCODE: 0011011 OP-IMM-32
+            0x0: op_imm_32({{
+
+            }});
+            // OPCODE: 0111011 OP-32
+            // OPCODE: 1011011 CUSTOME-2/RV128 NOT USED!
+            // OPCODE: 1111011 CUSTOME-3/RV128 NOT USED!
+        }
+    }
+    // OPCODE: xx11111 Loanger than 32-bit. NOT USED!
+}
